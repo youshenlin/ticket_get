@@ -13,6 +13,31 @@ var checkSpan = (name) => {
         }
     }
   }
+
+var checkTag = (tagname,name) => {
+    var s = document.getElementsByTagName(tagname);
+    for (i = 0;i < s.length; i++) {
+        if (s[i].innerText === name) {
+            return "check";
+        }
+    }
+  }
+  var checkHtwo = (name) => {
+    var s = document.getElementsByTagName("h2");
+    for (i = 0;i < s.length; i++) {
+        if (s[i].innerText === name) {
+            return "check";
+        }
+    }
+  }
+  var checkTh = (name) => {
+    var s = document.getElementsByTagName("th");
+    for (i = 0;i < s.length; i++) {
+        if (s[i].innerText === name) {
+            return "check";
+        }
+    }
+  }
   var clickbtn = (name,classname) => {
     var s = $(classname);
     for (i = 0;i < s.length; i++) {
@@ -199,6 +224,42 @@ var ibonTicket = (inputData) => {
 }
 
 
+var toryunTicket = (inputData) => {
+    var ticket = inputData.ticket;
+        var ticketNumber = inputData.ticketNumber;
+        var idNumber = inputData.idNumber;
+        var creditNumber = inputData.creditNumber;
+        var creditYear = inputData.creditYear;
+        var creditMonth = inputData.creditMonth;
+        var creditCheck = inputData.creditCheck;
+        var ticketDate = inputData.ticketDate;
+        var ticketPayment = inputData.ticketPayment;
+
+        if(checkHtwo("請選擇選位方式") === "check"){
+            clickForChildClass('select_form_b',ticket,0);
+        }
+
+        if(checkTh("數量選擇") === "check"){
+            var selectTicket =  document.getElementsByClassName("mobile-select")[0];
+            jsSelectItemByValue(selectTicket,ticketNumber);
+            $("label").click();
+            $('#TicketForm_verifyCode').focus();
+            $("#TicketForm_verifyCode").keydown(function(event){
+            if( event.which == 13 ) {
+                $("#ticketPriceSubmit").click();
+            }
+        });
+        }
+        if(checkTag('h4',"配送方式") === "check"){
+            //目前都選擇atm轉帳
+            $('#PaymentForm_payment_id_54').parent('label').click();
+            
+            setTimeout(function(){$("#submitButton").click();}, 500);
+        }
+        
+
+        
+    }
 
 
 
@@ -220,7 +281,9 @@ var getChrome = (checkFun) => {
             if(startCheck == '0' && checkFun == 'start' && chooseSystem == '0'){
                 setTimeout(function(){always(items.checktest);}, 1000);
             }else if(startCheck == '0' && checkFun == 'start' && chooseSystem == '1'){
-                setTimeout(function(){ibonTicket(items.checktest);}, 1000);
+                setTimeout(function(){ibonTicket(items.checktest);}, 500);
+            }else if(startCheck == '0' && checkFun == 'start' && chooseSystem == '2'){
+                setTimeout(function(){toryunTicket(items.checktest);}, 500);
             }
             else if (startCheck == '0' && checkFun == 'time' && chooseSystem != '2'){
                 if(timeNow <= timeInput){
