@@ -11,7 +11,7 @@ var checkSpan = (name) => {
         if (s[i].innerText === name) {
             return "check";
         }
-    }//
+    }
   }
   var clickbtn = (name,classname) => {
     var s = $(classname);
