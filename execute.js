@@ -65,6 +65,19 @@ var checkpayment_kktix = (name) => {
     }
         console.log(x);
     }
+    function checkTimeFortoryun(timeA,choose){
+        　var NowDate=new Date();
+        　var h=NowDate.getHours();
+        　var m=NowDate.getMinutes();
+        　var s=NowDate.getSeconds();　
+        　var x = h+':'+m+':'+s;
+        if( x === timeA){
+            clickForClass('btn btn-default btn-lg',0);
+            setInterval(function(){ clickForClass('btn btn-next',choose); },500);
+            //btn btn-next
+        }
+            console.log(x);
+        }
 
 //select option 改
     function jsSelectItemByValue(objSelect, objItemText) {                  
@@ -88,7 +101,6 @@ var checkpayment_kktix = (name) => {
    }
 
 
-//select option 改
 var always = (inputData) => {
     console.log(inputData);
     if(checkSpan("自行選位") === "check"){
@@ -134,6 +146,8 @@ var always = (inputData) => {
     
 }
 
+
+//ibon 搶票
 var ibonTicket = (inputData) => {
     var ticket = inputData.ticket;
         var ticketNumber = inputData.ticketNumber;
@@ -143,6 +157,7 @@ var ibonTicket = (inputData) => {
         var creditMonth = inputData.creditMonth;
         var creditCheck = inputData.creditCheck;
         var ticketDate = inputData.ticketDate;
+        var ticketPayment = inputData.ticketPayment;
         if(document.getElementsByClassName('btn b03').length > 0){
             clickForChildClass('btn b03',ticketDate,1);
         }
@@ -173,19 +188,18 @@ var ibonTicket = (inputData) => {
     }
     if(location.host == 'sslpayment.uwccb.com.tw')
     {
+        var month = document.getElementById("ctl00_ContentPlaceHolder1_strMM");
+        var year = document.getElementById("ctl00_ContentPlaceHolder1_strYY");
         $('#ctl00_ContentPlaceHolder1_strCardNo').val(creditNumber);
-        $('#ctl00_ContentPlaceHolder1_strMM').val(creditMonth);
-        $('#ctl00_ContentPlaceHolder1_strYY').val("20"+creditYear);
+        jsSelectItemByValue(month,creditMonth);
+        jsSelectItemByValue(year,"20"+creditYear);
         $('#check_num').val(creditCheck);
-
+        clickbtn("確定",".btn");
     }
-   /* //location.host: sslpayment.uwccb.com.tw
-   信用卡好：ctl00_ContentPlaceHolder1_strCardNo
-   ctl00_ContentPlaceHolder1_strMM 1 2 3 
-   ctl00_ContentPlaceHolder1_strYY 2020
-    後三碼 check_num
-    確定 ctl00_ContentPlaceHolder1_btn_box*/
 }
+
+
+
 
 
 var getChrome = (checkFun) => {
@@ -194,6 +208,7 @@ var getChrome = (checkFun) => {
         var ticket = items.checktest.ticket;
         var ticketNumber = items.checktest.ticketNumber;
         var idNumber = items.checktest.idNumber;
+        var ticketDate = items.checktest.ticketDate;
         var timeCheckHour = items.checktest.timeCheckHour;
         var timeChecMin = items.checktest.timeChecMin;
         var timeCheckSecond = items.checktest.timeCheckSecond;
@@ -207,12 +222,20 @@ var getChrome = (checkFun) => {
             }else if(startCheck == '0' && checkFun == 'start' && chooseSystem == '1'){
                 setTimeout(function(){ibonTicket(items.checktest);}, 1000);
             }
-            else if (startCheck == '0' && checkFun == 'time'){
+            else if (startCheck == '0' && checkFun == 'time' && chooseSystem != '2'){
                 if(timeNow <= timeInput){
                     console.log("開始倒數");
                     console.log(timeInput);
                     var setTime = timeCheckHour+':'+timeChecMin+':'+timeCheckSecond;//設定時間
                     setInterval(function(){ checkTime(setTime); },1000);
+                }
+            }
+            else if (startCheck == '0' && checkFun == 'time' && chooseSystem == '2'){
+                if(timeNow <= timeInput){
+                    console.log("開始倒數");
+                    console.log(timeInput);
+                    var setTime = timeCheckHour+':'+timeChecMin+':'+timeCheckSecond;//設定時間
+                    setInterval(function(){ checkTimeFortoryun(setTime,(ticketDate-1)); },1000);
                 }
             }
         }

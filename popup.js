@@ -15,8 +15,9 @@ var getSelectedTab = (tab) => {
         document.getElementById('timeCheckHour').value = items.checktest.timeCheckHour;
         document.getElementById('timeChecMin').value = items.checktest.timeChecMin;
         document.getElementById('timeCheckSecond').value = items.checktest.timeCheckSecond;
-        $('input[name="startCheck"]')[items.checktest.startCheck].checked = true,
-        $('input[name="chooseSystem"]')[items.checktest.chooseSystem].checked = true
+        $('input[name="startCheck"]')[items.checktest.startCheck].checked = true;
+        $('input[name="chooseSystem"]')[items.checktest.chooseSystem].checked = true;
+        $('input[name="ticketPayment"]')[items.checktest.ticketPayment].checked = true;
       } 
     });
   
@@ -25,7 +26,6 @@ var getSelectedTab = (tab) => {
     //var method =$("input[name='doway']:checked").val();
     document.getElementById('rotate').addEventListener('click', () => sendMessage({ action: 'ROTATE' }));
     document.getElementById('saveData').addEventListener('click', (event) => {
-
       chrome.storage.local.set({
         checktest:  {
           ticketDate:document.getElementById('ticketDate').value,
@@ -40,7 +40,9 @@ var getSelectedTab = (tab) => {
           timeChecMin:document.getElementById('timeChecMin').value,
           timeCheckSecond:document.getElementById('timeCheckSecond').value,
           startCheck:$("input[name='startCheck']:checked").val(),
-          chooseSystem:$("input[name='chooseSystem']:checked").val() 
+          chooseSystem:$("input[name='chooseSystem']:checked").val(),
+          ticketPayment:$("input[name='ticketPayment']:checked").val(),
+
           }
       });
       
