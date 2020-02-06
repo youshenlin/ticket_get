@@ -90,6 +90,8 @@ var checkpayment_kktix = (name) => {
     }
         console.log(x);
     }
+
+    var checkTworYun = null;
     function checkTimeFortoryun(timeA,choose){
         　var NowDate=new Date();
         　var h=NowDate.getHours();
@@ -98,7 +100,13 @@ var checkpayment_kktix = (name) => {
         　var x = h+':'+m+':'+s;
         if( x === timeA){
             clickForClass('btn btn-default btn-lg',0);
-            setInterval(function(){ clickForClass('btn btn-next',choose); },500);
+            checkTworYun = setInterval(function(){ 
+                if(a = document.getElementsByClassName('btn btn-next').length > 0){
+                    clickForClass('btn btn-next',choose);
+                    clearInterval(checkTworYun);
+                }
+                
+             },1);
             //btn btn-next
         }
             console.log(x);
@@ -235,7 +243,9 @@ var toryunTicket = (inputData) => {
         var ticketDate = inputData.ticketDate;
         var ticketPayment = inputData.ticketPayment;
 
-        if(checkHtwo("請選擇選位方式") === "check"){
+
+
+        if(checkHtwo("請選擇區域") === "check"){
             clickForChildClass('select_form_b',ticket,0);
         }
 
