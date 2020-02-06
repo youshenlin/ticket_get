@@ -246,7 +246,7 @@ var toryunTicket = (inputData) => {
 
 
         if(checkHtwo("請選擇區域") === "check"){
-            clickForChildClass('select_form_b',ticket,0);
+            clickForChildClass('select_form_a',ticket,0);
         }
 
         if(checkTh("數量選擇") === "check"){
