@@ -90,15 +90,17 @@ var checkpayment_kktix = (name) => {
     }
         console.log(x);
     }
-
+    var checkTimeOut = null;
     var checkTworYun = null;
+    var checkStart = null;
     function checkTimeFortoryun(timeA,choose){
         　var NowDate=new Date();
         　var h=NowDate.getHours();
         　var m=NowDate.getMinutes();
         　var s=NowDate.getSeconds();　
         　var x = h+':'+m+':'+s;
-        if( x === timeA){
+        if( x === timeA ){
+            clearInterval(checkTimeOut);
             clickForClass('btn btn-default btn-lg',0);
             checkTworYun = setInterval(function(){ 
                 if(a = document.getElementsByClassName('btn btn-next').length > 0){
@@ -136,15 +138,14 @@ var checkpayment_kktix = (name) => {
 
 var always = (inputData) => {
     console.log(inputData);
+    var ticket = inputData.ticket;
+    var ticketNumber = inputData.ticketNumber;
+    var idNumber = inputData.idNumber;
+    var creditNumber = inputData.creditNumber;
+    var creditYear = inputData.creditYear;
+    var creditMonth = inputData.creditMonth;
+    var creditCheck = inputData.creditCheck;
     if(checkSpan("自行選位") === "check"){
-        var ticket = inputData.ticket;
-        var ticketNumber = inputData.ticketNumber;
-        var idNumber = inputData.idNumber;
-        var creditNumber = inputData.creditNumber;
-        var creditYear = inputData.creditYear;
-        var creditMonth = inputData.creditMonth;
-        var creditCheck = inputData.creditCheck;
-
         //選要買的票價 [0] 就是第一個 依此類推..
         if(a = document.getElementsByClassName("btn-default plus")[(ticket-1)]){
             for (i = 0;i < ticketNumber; i++) {
@@ -244,29 +245,32 @@ var toryunTicket = (inputData) => {
         var ticketPayment = inputData.ticketPayment;
 
 
-
-        if(checkHtwo("請選擇區域") === "check"){
-            clickForChildClass('select_form_a',ticket,0);
-        }
-
-        if(checkTh("數量選擇") === "check"){
-            var selectTicket =  document.getElementsByClassName("mobile-select")[0];
-            jsSelectItemByValue(selectTicket,ticketNumber);
-            $("label").click();
-            $('#TicketForm_verifyCode').focus();
-            $("#TicketForm_verifyCode").keydown(function(event){
-            if( event.which == 13 ) {
-                $("#ticketPriceSubmit").click();
+        checkStart = setInterval(function(){ 
+            if(checkHtwo("請選擇區域") === "check"){
+                clickForChildClass('select_form_a',ticket,0);
+                clearInterval(checkStart);
             }
-        });
-        }
-        if(checkTag('h4',"配送方式") === "check"){
-            //目前都選擇atm轉帳
-            $('#PaymentForm_payment_id_54').parent('label').click();
-            
-            setTimeout(function(){$("#submitButton").click();}, 500);
-        }
-        
+
+            if(checkTh("數量選擇") === "check"){
+                var selectTicket =  document.getElementsByClassName("mobile-select")[0];
+                jsSelectItemByValue(selectTicket,ticketNumber);
+                $("label").click();
+                $('#TicketForm_verifyCode').focus();
+                $("#TicketForm_verifyCode").keydown(function(event){
+                if( event.which == 13 ) {
+                    $("#ticketPriceSubmit").click();
+                }
+            });
+            clearInterval(checkStart);
+            }
+            if(checkTag('h4',"配送方式") === "check"){
+                //目前都選擇atm轉帳
+                $('#PaymentForm_payment_id_54').parent('label').click();
+                
+                setTimeout(function(){$("#submitButton").click();}, 500);
+                clearInterval(checkStart);
+            }
+         },20);
 
         
     }
@@ -293,7 +297,7 @@ var getChrome = (checkFun) => {
             }else if(startCheck == '0' && checkFun == 'start' && chooseSystem == '1'){
                 setTimeout(function(){ibonTicket(items.checktest);}, 500);
             }else if(startCheck == '0' && checkFun == 'start' && chooseSystem == '2'){
-                setTimeout(function(){toryunTicket(items.checktest);}, 500);
+                toryunTicket(items.checktest);
             }
             else if (startCheck == '0' && checkFun == 'time' && chooseSystem != '2'){
                 if(timeNow <= timeInput){
@@ -308,7 +312,7 @@ var getChrome = (checkFun) => {
                     console.log("開始倒數");
                     console.log(timeInput);
                     var setTime = timeCheckHour+':'+timeChecMin+':'+timeCheckSecond;//設定時間
-                    setInterval(function(){ checkTimeFortoryun(setTime,(ticketDate-1)); },1000);
+                    checkTimeOut = setInterval(function(){checkTimeFortoryun(setTime,(ticketDate-1)); },20);
                 }
             }
         }
